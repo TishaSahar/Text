@@ -1,7 +1,9 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <stack>
+
 
 using namespace std;
 
@@ -19,16 +21,21 @@ class Text {
 	Node *root;
 	Node *curr;
 	stack<Node*> st;
+
+	void remoteBranch(Node *n);
 public:
 	Text() { root = curr = NULL; }
+	Node *getRoot() { return root; }
 
 	void right();
 	void left();
 	void top();
 
-	void addCurr(string &st);
 	void addRight(string &st);
 	void addLeft(string &st);
 
+	void remote();
+
+	friend fstream& operator >> (fstream &f, const Text &T);
 	friend ostream &operator<<(ostream &o, const Text &T);
 };

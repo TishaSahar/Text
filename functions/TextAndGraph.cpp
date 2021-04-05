@@ -10,7 +10,7 @@ void PrintTRL(ostream &o, Node *root, Node *curr, int level) {
 	o << root->val << endl;
 	PrintTRL(o, root->right, curr, level + 2);
 	PrintTRL(o, root->left, curr, level-1);
-	system("pause");
+	//system("pause");
 }
 
 ostream &operator<<(ostream &o, const Text &T){
@@ -39,43 +39,46 @@ void Text::top() {
 	st.pop();
 }
 
-void Text::addCurr(string &st) {
-	if (curr == root) { 
-		root = new Node(st);
-		curr = root;
-	}
-	else {
-		curr = new Node(st);
-	}
-}
 
 void Text::addRight(string &st) {
-	if (curr == root) {
-		root->right = new Node(st);
-		curr = root->right;
+	if (root == NULL) {
+		root = curr = new Node(st);
+		return;
 	}
-	else {
-		if (curr->right == NULL) {
-			curr->right = new Node(st);
-			curr = curr->right;
-		}
-		else
-			throw logic_error("right isn't empty / can't add");
-	}
+	Node *p = new Node(st, curr->right);
+	curr->right = p;
 }
 
 void Text::addLeft(string &st) {
-	if (curr == root) {
-		root->left = new Node(st);
-		curr = root->left;
+	if (root == NULL) {
+		root = curr = new Node(st);
+		return;
 	}
-	else {
-		if (curr->left == NULL) {
-			curr->left = new Node(st);
-			curr = curr->left;
-		}
-		else
-			throw logic_error("left isn't empty / can't add");
-	}
+	Node *p = new Node(st, curr->left);
+	curr->left = p;
 }
 
+void Text::remoteBranch(Node *n) {
+	if (n == NULL) return;
+	remoteBranch(n->left);
+	remoteBranch(n->right);
+	delete n;
+}
+void Text::remote() {
+	if (curr == NULL) return;
+	remoteBranch(curr->right);
+	Node *temp = curr;
+	if (!st.empty()) {
+		top();
+		if (curr->left == temp)
+			curr->left = temp->left;
+		if (curr->right == temp) {
+			curr->right = temp->right;
+		}
+	}
+	else {
+		root = temp->left;
+		curr = root;
+		delete temp;
+	}
+}
