@@ -21,10 +21,12 @@ class Text {
 	Node *root;
 	Node *curr;
 	stack<Node*> st;
-
+	//ifstream &in;
 	void remoteBranch(Node *n);
 public:
-	Text() { root = curr = NULL; }
+	Text() {
+		root = curr = NULL;
+	}
 	Node *getRoot() { return root; }
 
 	void right();
@@ -36,6 +38,6 @@ public:
 
 	void remote();
 
-	friend fstream& operator >> (fstream &f, const Text &T);
+	void readFile(ifstream &in);
 	friend ostream &operator<<(ostream &o, const Text &T);
 };

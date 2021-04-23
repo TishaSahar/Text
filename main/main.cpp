@@ -12,6 +12,9 @@ int main() {
 	string n2 = "right";
 	string n3 = "left";
 
+	ifstream _in("C:\TextFile.txt");
+	T.readFile(_in);
+
 	while (true) {
 		system("cls");
 		cout << T;

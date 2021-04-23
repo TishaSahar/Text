@@ -5,7 +5,7 @@ void PrintTRL(ostream &o, Node *root, Node *curr, int level) {
 	if (root == curr) o << "*";
 	else o << "|";
 	for (int i = 0; i < level; i++) {
-		o << "      ";
+		o << "    ";
 	}
 	o << root->val << endl;
 	PrintTRL(o, root->right, curr, level + 2);
@@ -81,4 +81,32 @@ void Text::remote() {
 		curr = root;
 		delete temp;
 	}
+}
+
+void Text::readFile(ifstream &in) {
+	if (!in.is_open()) throw logic_error("file isn't open");
+	string line = "";
+	while (getline(in, line)) {
+		int i = 0;
+		int level = 0;
+		string tmp = "";
+		while ((line[i] != '{') && (line[i] != '}') && (line[i] != '\n')) {
+			if(line[i] != ' ')
+				tmp += line[i];
+			i++;
+		}
+		addLeft(tmp);
+		left();
+		if (line[i] == '{') {
+			tmp = "{";
+			addRight(tmp);
+			right();
+		}
+		if (line[i] == '}') {
+			tmp = "}";
+			top();
+			addLeft(tmp);
+		}
+	}
+	in.close();
 }
